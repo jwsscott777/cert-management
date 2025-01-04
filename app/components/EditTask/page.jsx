@@ -6,7 +6,7 @@ import {useAuth} from "@clerk/nextjs";
 export const dynamic = "force-dynamic";
 const api_url = process.env.NEXT_PUBLIC_API_URL;
 
-function EditTask({task}) {
+function EditTask({task = {}}) {
     const [title, setTitle] = useState(task?.title || "");
     const [description, setDesc] = useState(task?.description || "");
     const [status, setStatus] = useState(task?.status || false);
@@ -63,7 +63,7 @@ function EditTask({task}) {
                   </div>
                   <div className="w-full flex flex-col space-y-4 justify-center items-start">
                       <label htmlFor="title" className='font-bold text-blue-700'>Date Created</label>
-                      <span className="font-semibold text-xs text-amber-700">{task.time || "N/A"}</span>
+                      <span className="font-semibold text-xs text-amber-700">{task?.time || "N/A"}</span>
                   </div>
                   <div className="w-full flex flex-col space-y-4 justify-center items-start">
                       <label htmlFor="title" className='font-bold text-green-400'>Status</label>
