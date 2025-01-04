@@ -3,13 +3,13 @@
 import React, { useState } from 'react'
 import {useRouter} from "next/navigation";
 import {useAuth} from "@clerk/nextjs";
-
+export const dynamic = "force-dynamic";
 const api_url = process.env.NEXT_PUBLIC_API_URL;
 
 function EditTask({task}) {
-    const [title, setTitle] = useState(task.title);
-    const [description, setDesc] = useState(task.description);
-    const [status, setStatus] = useState(task.status);
+    const [title, setTitle] = useState(task?.title || "");
+    const [description, setDesc] = useState(task?.description || "");
+    const [status, setStatus] = useState(task?.status || false);
     const router = useRouter();
 
     const {userId, getToken} = useAuth();
