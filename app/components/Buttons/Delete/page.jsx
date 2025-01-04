@@ -2,7 +2,6 @@
 import React from 'react'
 import Image from 'next/image'
 import {useRouter} from "next/navigation";
-import {auth} from "@clerk/nextjs/server";
 import {useAuth} from "@clerk/nextjs";
 
 const api_url = process.env.NEXT_PUBLIC_API_URL;
