@@ -1,7 +1,7 @@
 import clientPromise from "@/lib/mongodb";
 import {getAuth} from "@clerk/nextjs/server";
 import {revalidatePath} from "next/cache";
-
+export const revalidate = 0;
 export default async function handler(req, res) {
 
   const {userId} = getAuth(req);
