@@ -83,6 +83,6 @@ function EditTask({task}) {
   )
 }
 
-export default EditTask
+export default <EditTask task={task} />
 
 

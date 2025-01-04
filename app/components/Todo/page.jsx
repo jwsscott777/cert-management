@@ -4,9 +4,11 @@ import React from 'react'
 import Delete from '../Buttons/Delete/page'
 import Edit from '../Buttons/Edit/page'
 import Link from 'next/link'
-
+export const dynamic = "force-dynamic";
 function Todo({ task }) {
-    //console.log(task.title);
+    if (!task) {
+        return <div className="text-red-500">Error: Task data is missing.</div>;
+      }
   return (
       <>
         <div className='flex flex-col justify-center items-start space-y-2 border-2 border-gray-700 p-4 w-full lg:w-4/5 rounded-lg shadow-gray-500/50 shadow-lg'>
@@ -40,4 +42,4 @@ function Todo({ task }) {
   )
 }
 
-export default Todo
+export default <Todo task={task} />
