@@ -5,6 +5,27 @@ import {useAuth} from "@clerk/nextjs";
 
 const api_url = process.env.NEXT_PUBLIC_API_URL;
 
+export async function getServerSideProps(context) {
+    const { id } = context.params;
+  
+    try {
+      const response = await fetch(`${api_url}/${id}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch task: ${response.status}`);
+      }
+      const task = await response.json();
+  
+      return {
+        props: {
+          task,
+        },
+      };
+    } catch (error) {
+      return {
+        notFound: true,
+      };
+    }
+  }
 function EditTask({task}) {
     const [title, setTitle] = useState(task.title);
     const [description, setDesc] = useState(task.description);
