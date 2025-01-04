@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from 'react'
 import Todo from '@/app/components/Todo/page';
 import {auth} from "@clerk/nextjs/server";
@@ -29,20 +30,6 @@ async function Todos() {
         const {data:tasks} = await response.json();
        
         return (
-            // <>
-            //     <div className="flex flex-col bg-black justify-center items-center w-full p-12">
-            //         <div className='flex flex-col justify-center items-center w-3/4 m-5 p-6 space-y-5'>
-            //             {tasks && tasks.length > 0 ? (
-            //                 [...tasks].reverse().map((task =>(
-            //                     <Todo key={task._id} task={task}/>
-            //                 )))
-            //             ):(
-            //                 <div className="font-extrabold text-gray-500">No Certificates Found</div>
-            //             )}
-                         
-            //         </div>
-            //     </div>
-            // </>
             <>
                 <div className="flex flex-col min-h-screen bg-black">
                     {/* Main Content */}
