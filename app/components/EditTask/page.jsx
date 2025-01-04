@@ -1,6 +1,6 @@
 "use client"
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState, useParams } from 'react'
+import React, { useState } from 'react'
 import {useRouter} from "next/navigation";
 import {useAuth} from "@clerk/nextjs";
 export const dynamic = "force-dynamic";
@@ -12,7 +12,6 @@ function EditTask({task}) {
     const [status, setStatus] = useState(task?.status || false);
     const router = useRouter();
     
-    const { id } = useParams();
     const {userId, getToken} = useAuth();
 
     const handleEditTask = async(e) =>{
