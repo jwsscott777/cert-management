@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import {getAuth} from "@clerk/nextjs/server";
 import {revalidatePath} from "next/cache";
 
+
 export default async function handler(req, res) {
 
   const {userId} = getAuth(req);
@@ -53,6 +54,7 @@ export default async function handler(req, res) {
           .json({ message: "Task updated successfully", data: updateTask });
       } catch (err) {
         res.status(500).json({ message: "Internal server error" });
+        console.log(err);
       }
       break;
     case 'DELETE':
@@ -66,6 +68,7 @@ export default async function handler(req, res) {
         res.status(200).json({ message: "Task deleted from DB" });
       } catch (err) {
         res.status(500).json({ message: "Internal server error" });
+        console.log(err);
       }
       break;
     case 'GET':
@@ -77,6 +80,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ message: "Task found", data: taskItem });
       } catch (err) {
         res.status(500).json({ message: "Internal server error" });
+        console.log(err);
       }
       break;
     default:

@@ -42,4 +42,4 @@ function Todo({ task }) {
   )
 }
 
-export default <Todo task={task} />
+export default Todo  

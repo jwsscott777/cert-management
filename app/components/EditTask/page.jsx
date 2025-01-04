@@ -11,6 +11,7 @@ function EditTask({task}) {
     const [description, setDesc] = useState(task?.description || "");
     const [status, setStatus] = useState(task?.status || false);
     const router = useRouter();
+    
 
     const {userId, getToken} = useAuth();
 
@@ -27,6 +28,7 @@ function EditTask({task}) {
                 alert("Please log in again.")
                 return; 
             }
+           
             const response = await fetch(`${api_url}/${task._id}`, {
                 method: 'PUT',
                 headers: {
@@ -39,7 +41,7 @@ function EditTask({task}) {
             if (!response.ok){
                 throw new Error(`Failed to update this task, ${response.status}`);
             }
-           // const {data: updatedTask} = response.json();
+            const task = await response.json();
             //console.log("Updated task", updatedTask);
             router.push("/todos");
         }catch (error) {
@@ -83,6 +85,6 @@ function EditTask({task}) {
   )
 }
 
-export default <EditTask task={task} />
+export default EditTask 
 
 
