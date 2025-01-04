@@ -1,31 +1,11 @@
 "use client"
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react'
 import {useRouter} from "next/navigation";
 import {useAuth} from "@clerk/nextjs";
 
 const api_url = process.env.NEXT_PUBLIC_API_URL;
 
-export async function getServerSideProps(context) {
-    const { id } = context.params;
-  
-    try {
-      const response = await fetch(`${api_url}/${id}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch task: ${response.status}`);
-      }
-      const task = await response.json();
-  
-      return {
-        props: {
-          task,
-        },
-      };
-    } catch (error) {
-      return {
-        notFound: true,
-      };
-    }
-  }
 function EditTask({task}) {
     const [title, setTitle] = useState(task.title);
     const [description, setDesc] = useState(task.description);
@@ -38,12 +18,14 @@ function EditTask({task}) {
         e.preventDefault();
         try{
             if(!userId){
-                return (<div>You are not logged in</div>)
+                alert("You are not logged in!")
+                return; 
             }
             const token = await getToken();
 
             if(!token){
-                return (<div>Hmm, please try logging again</div>)
+                alert("Please log in again.")
+                return; 
             }
             const response = await fetch(`${api_url}/${task._id}`, {
                 method: 'PUT',
@@ -57,7 +39,7 @@ function EditTask({task}) {
             if (!response.ok){
                 throw new Error(`Failed to update this task, ${response.status}`);
             }
-            const {data: updatedTask} = response.json();
+           // const {data: updatedTask} = response.json();
             //console.log("Updated task", updatedTask);
             router.push("/todos");
         }catch (error) {

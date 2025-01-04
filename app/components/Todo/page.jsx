@@ -1,5 +1,5 @@
 "use client"
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import Delete from '../Buttons/Delete/page'
 import Edit from '../Buttons/Edit/page'

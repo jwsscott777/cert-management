@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export const dynamic = 'force-dynamic';
 import React from 'react'
 import Todo from '@/app/components/Todo/page';

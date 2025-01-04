@@ -1,14 +1,15 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, {useEffect, useState} from 'react';
-import {useParams, useRouter} from 'next/navigation';
+import {useParams} from 'next/navigation';
 import EditTask from '@/app/components/EditTask/page';
 import {useAuth} from "@clerk/nextjs";
 
 const api_url = process.env.NEXT_PUBLIC_API_URL;
 
 function TodoDetailPage() {
-    const {id} = useParams();
+   // const { id } = useParams();
+    const id = useParams()?.id || null; // Safely destructure with a fallback
     const [task, setTask] = useState(null);
     const [error, setError] = useState(null);
     // get user details using a client side approach [no need for await]
