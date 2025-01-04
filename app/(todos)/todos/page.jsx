@@ -4,27 +4,44 @@ import React from 'react'
 import Todo from '@/app/components/Todo/page';
 import {auth} from "@clerk/nextjs/server";
 
-const api_url = process.env.NEXT_PUBLIC_API_URL;
+const api_url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/tasks";
 
 async function Todos() {
     try{
-        const {userId, getToken} = await auth();
+        const useClerk = process.env.NEXT_PUBLIC_USE_CLERK === "true";
+
+let token;
+if (useClerk) {
+  const { getToken } = useAuth();
+  token = await getToken();
+} else {
+  token = "mock-token"; // Mock token for testing
+}
+
+// Make API call
+const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/tasks`, {
+  headers: {
+    Authorization: useClerk ? `Bearer ${token}` : undefined,
+    "Content-Type": "application/json",
+  },
+});
+        //const {userId, getToken} = await auth();
 
         if(!userId){
             return (<div>You are not logged in</div>)
         }
-        const token = await getToken();
-
+       // const token = await getToken();
+        
         if(!token){
             return (<div>Hmm, please try logging again</div>)
         }
         // Make the request
-        const response = await fetch(api_url, {
-            cache: "no-store",
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
+        // const response = await fetch(api_url, {
+        //     cache: "no-store",
+        //     headers: {
+        //         'Authorization': `Bearer ${token}`
+        //     }
+        // });
         if(!response.ok){
             throw new Error(`Cant fetch data from the DB, ${response.status}`);
         }

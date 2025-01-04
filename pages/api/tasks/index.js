@@ -1,5 +1,5 @@
 import clientPromise from "@/lib/mongodb";
-import {getAuth} from "@clerk/nextjs/server";
+//import {getAuth} from "@clerk/nextjs/server";
 import {revalidatePath} from "next/cache";
 export const revalidate = 0;
 export default async function handler(req, res) {
@@ -11,8 +11,25 @@ export default async function handler(req, res) {
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
+///TODO: Remove later
+  const useClerk = process.env.USE_CLERK === "true";
 
-  const {userId} = getAuth(req);
+let userId;
+
+if (useClerk) {
+  const auth = getAuth(req);
+  userId = auth.userId;
+} else {
+  userId = "test-user-id"; // Mock user ID for testing
+}
+//TODO: END
+if (!userId) {
+  return res.status(401).json({ message: "Unauthorized", error: "User not Found" });
+}
+  
+
+  //const {userId} = getAuth(req);
+  //const userId = "test-user-id";
   console.log("Authorization Header:", req.headers.authorization);
 console.log("Clerk User ID:", userId);
   if(!userId){
