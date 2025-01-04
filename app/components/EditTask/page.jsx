@@ -1,6 +1,6 @@
 "use client"
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react'
+import React, { useState, useParams } from 'react'
 import {useRouter} from "next/navigation";
 import {useAuth} from "@clerk/nextjs";
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ function EditTask({task}) {
     const [status, setStatus] = useState(task?.status || false);
     const router = useRouter();
     
-
+    const { id } = useParams();
     const {userId, getToken} = useAuth();
 
     const handleEditTask = async(e) =>{
@@ -64,7 +64,7 @@ function EditTask({task}) {
                   </div>
                   <div className="w-full flex flex-col space-y-4 justify-center items-start">
                       <label htmlFor="title" className='font-bold text-blue-700'>Date Created</label>
-                      <span className="font-semibold text-xs text-amber-700">{task.time}</span>
+                      <span className="font-semibold text-xs text-amber-700">{task.time || "N/A"}</span>
                   </div>
                   <div className="w-full flex flex-col space-y-4 justify-center items-start">
                       <label htmlFor="title" className='font-bold text-green-400'>Status</label>
