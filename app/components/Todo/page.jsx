@@ -41,5 +41,4 @@ function Todo({ task }) {
       </>
   )
 }
-
 export default Todo  
