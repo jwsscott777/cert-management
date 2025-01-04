@@ -13,6 +13,8 @@ export default async function handler(req, res) {
   }
 
   const {userId} = getAuth(req);
+  console.log("Authorization Header:", req.headers.authorization);
+console.log("Clerk User ID:", userId);
   if(!userId){
     revalidatePath("/");
     return res.status(401).json({message: "Unauthorized", error: "User not Found"});
@@ -43,7 +45,7 @@ export default async function handler(req, res) {
         const insertNewTask = await collection.insertOne(newTask);
         res
           .status(201)
-          .json({ message: "Task created successfully" }, insertNewTask);
+          .json({ message: "Task created successfully", data: insertNewTask });
         break;
 
       default:
@@ -51,6 +53,7 @@ export default async function handler(req, res) {
         res.status(405).json({ message: `Method ${req.method} not accepted` });
     }
   } catch (err) {
-    throw new Error(`Failed to connect to the DB, ${err.message}`);
+    console.error(`Failed to connect to the DB: ${err.message}`);
+  return res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
 }
