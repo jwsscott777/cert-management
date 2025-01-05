@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import {useAuth} from "@clerk/nextjs";
 
-const api_url = process.env.NEXT_PUBLIC_API_URL
+const api_url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/tasks";
 
 function AddTask() {
 
@@ -43,7 +43,7 @@ function AddTask() {
         }
 
         const {data:newTask} = await response.json();
-        //console.log("New task", newTask)
+        console.log("New task", newTask)
         setTitle('');
         setDesc('');
         setStatus(false);

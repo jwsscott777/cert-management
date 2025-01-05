@@ -3,7 +3,8 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from 'next/navigation';
 import EditTask from '@/app/components/EditTask/page';
-//import {useAuth} from "@clerk/nextjs";
+import {useAuth} from "@clerk/nextjs";
+import { cookies } from "next/headers";
 
 const api_url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/tasks";;
 
@@ -13,35 +14,24 @@ function TodoDetailPage() {
     const [task, setTask] = useState(null);
     const [error, setError] = useState(null);
     // get user details using a client side approach [no need for await]
-   // const {userId, getToken} =  useAuth();
-   const userId = "test-user-id";
+    const {userId, getToken} =  useAuth();
 
     useEffect(() => {
         const fetchTask = async() =>{
             try{
-///TODO: REMOVE
-                const useClerk = process.env.NEXT_PUBLIC_USE_CLERK === "true";
-            
-            let token;
-            if (useClerk) {
-                const { getToken } = useAuth(); // Ensure useAuth is uncommented if using Clerk
-                token = await getToken();
-            } else {
-                token = "mock-token"; // Mock token for testing
-            }
-           ///TODO: END     
                 if(!userId){
                     return (<div>You are not logged in</div>)
                 }
-               // const token = await getToken();
-               
+                const token = await getToken();
 
                 if(!token){
                     return (<div>Hmm, please try logging again</div>)
                 }
+                const sessionCookie = cookies().get("session")?.value;
                 const taskResponse = await fetch(`${api_url}/${id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`,
+                        Cookie: sessionCookie ? `session=${sessionCookie}` : undefined,
                         'Content-Type': 'application/json',
                     }
                 });
