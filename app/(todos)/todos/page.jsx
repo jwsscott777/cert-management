@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic';
 import React from 'react'
 import Todo from '@/app/components/Todo/page';
 import {auth} from "@clerk/nextjs/server";
-import { cookies } from 'next/headers';
+
 
 const api_url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/tasks";
 
@@ -20,13 +20,12 @@ async function Todos() {
             return (<div>Hmm, please try logging again</div>)
         }
 
-        const sessionCookie = cookies().get("session")?.value;
+        
         // Make the request
         const response = await fetch(api_url, {
             cache: "no-store",
             headers: {
                 'Authorization': `Bearer ${token}`,
-                Cookie: sessionCookie ? `session=${sessionCookie}` : undefined,
             }
         });
         if(!response.ok){

@@ -4,19 +4,7 @@ import {revalidatePath} from "next/cache";
 export const revalidate = 0;
 export default async function handler(req, res) {
 
-  res.setHeader("Access-Control-Allow-Origin", "https://cert-management-ten.vercel.app"); // Replace with your actual frontend URL
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS"); // Allowed methods
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Allowed headers
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  const sessionCookie = req.headers.cookie;
-
-  if (!sessionCookie) {
-    return res.status(401).json({ message: "Unauthorized: No session cookie" });
-  }
 
   const {userId} = getAuth(req);
   

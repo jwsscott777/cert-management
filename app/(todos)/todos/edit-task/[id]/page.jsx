@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from 'next/navigation';
 import EditTask from '@/app/components/EditTask/page';
 import {useAuth} from "@clerk/nextjs";
-import { cookies } from "next/headers";
+
 
 const api_url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/tasks";;
 
@@ -27,11 +27,10 @@ function TodoDetailPage() {
                 if(!token){
                     return (<div>Hmm, please try logging again</div>)
                 }
-                const sessionCookie = cookies().get("session")?.value;
+               
                 const taskResponse = await fetch(`${api_url}/${id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`,
-                        Cookie: sessionCookie ? `session=${sessionCookie}` : undefined,
                         'Content-Type': 'application/json',
                     }
                 });

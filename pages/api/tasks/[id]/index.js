@@ -5,15 +5,7 @@ import {revalidatePath} from "next/cache";
 
 export const revalidate = 0;
 export default async function handler(req, res) {
-  // Add CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "https://cert-management-ten.vercel.app"); // Replace with your frontend URL
-  res.setHeader("Access-Control-Allow-Methods", "GET, PUT, DELETE, OPTIONS"); // Allowed methods
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Allowed headers
-
-  // Handle preflight request
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+  
 
   const {userId} = getAuth(req);
   if(!userId){
