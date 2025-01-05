@@ -17,6 +17,10 @@ function TodoDetailPage() {
     const { userId, getToken, has } =  useAuth();
 
     useEffect(() => {
+        if (!id) {
+            setError("Invalid task ID. Please check the URL.");
+            return;
+        }
         const fetchTask = async() =>{
             try{
                 if(!userId){
@@ -28,7 +32,15 @@ function TodoDetailPage() {
                     return (<div>Hmm, please try logging again</div>)
                 }
                
-                const isAdmin = has({ role: "org:admin" });
+                const isAdmin = (() => {
+                    try {
+                        return has({ role: "org:admin" });
+                    } catch (error) {
+                        console.error("Error determining admin role:", error);
+                        return false;
+                    }
+                })();
+                
                 const taskResponse = await fetch(`${api_url}/${id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -51,14 +63,23 @@ function TodoDetailPage() {
         if(id){
             fetchTask();
         }
-    },[id]);
+    },[id, userId, getToken, has]);
 
     if(error){
-        return <div>Error: {error}</div>
+        return (
+            <div className="text-red-500">
+                <p>Error: {error.message || "An unexpected error occurred."}</p>
+                <p>Please try refreshing the page or contact support if the issue persists.</p>
+            </div>
+        );
     }
 
     if(!task){
-        return <div>Loading...</div>
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <p className="text-white text-lg">Loading task details...</p>
+            </div>
+        );
     }
 
     return (

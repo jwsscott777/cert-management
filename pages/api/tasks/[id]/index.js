@@ -116,6 +116,25 @@ export default async function handler(req, res) {
     const time = new Date();
 
     switch (req.method) {
+      case "GET":
+        try {
+          const queryFilter = isAdmin
+            ? { _id: new ObjectId(id) } // Admin: Can fetch any task
+            : { _id: new ObjectId(id), userId }; // Regular user: Can fetch their own task
+
+          const taskItem = await collection.findOne(queryFilter);
+
+          if (!taskItem) {
+            return res.status(404).json({ message: "Task not found in DB" });
+          }
+
+          res.status(200).json({ message: "Task found", data: taskItem });
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({ message: "Internal server error" });
+        }
+        break;
+
       case "PUT":
         try {
           const { title, description, status } = req.body;
@@ -173,7 +192,7 @@ export default async function handler(req, res) {
         break;
 
       default:
-        res.setHeader("Allow", ["PUT", "DELETE"]);
+        res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
         res.status(405).json({ message: `Method ${req.method} not accepted` });
         break;
     }
