@@ -9,7 +9,7 @@ const api_url = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/ta
 
 async function Todos() {
     try{
-        const {userId, getToken} = await auth();
+        const { userId, getToken, has } = await auth();
 
         if(!userId){
             return (<div>You are not logged in</div>)
@@ -20,6 +20,7 @@ async function Todos() {
             return (<div>Hmm, please try logging again</div>)
         }
 
+        const isAdmin = has({ role: "org:admin" });
         
         // Make the request
         const response = await fetch(api_url, {
@@ -39,6 +40,9 @@ async function Todos() {
                     {/* Main Content */}
                     <div className="flex-grow flex flex-col justify-center items-center w-full p-12">
                         <div className='flex flex-col justify-center items-center w-3/4 m-5 p-6 space-y-5'>
+                        <h1 className='font-extrabold text-lg text-amber-500'>
+                        {isAdmin ? "Admin View: All Certificates" : "My Certificates"}
+                        </h1>
                             {tasks && tasks.length > 0 ? (
                                 [...tasks].reverse().map((task) => (
                                     <Todo key={task._id} task={task} />

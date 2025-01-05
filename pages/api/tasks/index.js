@@ -4,9 +4,9 @@ import {revalidatePath} from "next/cache";
 export const revalidate = 0;
 export default async function handler(req, res) {
 
+try {
 
-
-  const {userId} = getAuth(req);
+  const { userId, has } = getAuth(req);
   
   if(!userId){
     revalidatePath("/");
@@ -19,11 +19,17 @@ export default async function handler(req, res) {
 
   const time = new Date();
 
-  try {
+  const isAdmin = has({ role: "org:admin"})
     // all tasks
     switch (req.method) {
       case "GET":
-        const tasks = await collection.find({userId}).toArray();
+        let tasks;
+        if (isAdmin) {
+          tasks = await collection.find({}).toArray();
+        } else {
+           tasks = await collection.find({userId}).toArray();
+        }
+        
         res.status(200).json({ message: "All Tasks", data: tasks });
         break;
 

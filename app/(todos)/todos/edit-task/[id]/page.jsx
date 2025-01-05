@@ -14,7 +14,7 @@ function TodoDetailPage() {
     const [task, setTask] = useState(null);
     const [error, setError] = useState(null);
     // get user details using a client side approach [no need for await]
-    const {userId, getToken} =  useAuth();
+    const { userId, getToken, has } =  useAuth();
 
     useEffect(() => {
         const fetchTask = async() =>{
@@ -28,6 +28,7 @@ function TodoDetailPage() {
                     return (<div>Hmm, please try logging again</div>)
                 }
                
+                const isAdmin = has({ role: "org:admin" });
                 const taskResponse = await fetch(`${api_url}/${id}`,{
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -38,6 +39,9 @@ function TodoDetailPage() {
                     throw new Error(`Failed ot fetch item from the DB, ${taskResponse.status}`);
                 }
                 const {data: taskItem} = await taskResponse.json();
+                if (!isAdmin && taskItem.userId !== userId) {
+                    throw new Error("You are not authorized to access this task.");
+                }
                 setTask(taskItem);
             }catch(err){
                 setError(err);
